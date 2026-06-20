@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>31910-2009 ธุรกิจดิจิทัลผ่านสื่อสังคมออนไลน์</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600&family=TH+Sarabun+New:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563EB', // ฟ้า
+                        secondary: '#EF4444', // แดง
+                        light: '#F8FAFC',
+                    },
+                    fontFamily: {
+                        kanit: ['Kanit', 'sans-serif'], // Heading
+                        prompt: ['Prompt', 'sans-serif'], // UI / Subheading
+                        sarabun: ['"TH Sarabun New"', 'sans-serif'], // Body
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f0f4f8;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(217,100%,76%,0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(0,100%,76%,0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(217,100%,76%,0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(0,100%,76%,0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .font-sarabun { font-family: 'TH Sarabun New', sans-serif; font-size: 1.25rem; line-height: 1.6; }
+        .font-kanit { font-family: 'Kanit', sans-serif; }
+
+        /* Glassmorphism Classes */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.1), 0 4px 6px -2px rgba(37, 99, 235, 0.05);
+            border-color: rgba(37, 99, 235, 0.3);
+        }
+
+        /* Accordion Animations */
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out;
+        }
+        .accordion-content.open {
+            grid-template-rows: 1fr;
+        }
+        .accordion-inner {
+            overflow: hidden;
+        }
+        
+        .icon-rotate {
+            transition: transform 0.3s ease;
+        }
+        .open .icon-rotate {
+            transform: rotate(180deg);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <nav class="glass fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-xl">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <span class="font-kanit font-bold text-xl text-primary hidden sm:block">Digital Business</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-6 font-medium text-sm">
+                    <a href="#home" class="hover:text-primary transition-colors">หน้าแรก</a>
+                    <a href="#course-info" class="hover:text-primary transition-colors">ข้อมูลรายวิชา</a>
+                    <a href="#timeline" class="hover:text-primary transition-colors">แผนการสอน</a>
+                    <a href="#materials" class="hover:text-primary transition-colors">สื่อการเรียนรู้</a>
+                    <a href="#evaluation" class="hover:text-primary transition-colors">การวัดผล</a>
+                    <a href="#portfolio" class="hover:text-primary transition-colors">ผลงาน</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="#home" class="block px-3 py-2 text-base font-medium hover:bg-blue-50 hover:text-primary rounded-md">หน้าแรก</a>
+                <a href="#course-info" class="block px-3 py-2 text-base font-medium hover:bg-blue-50 hover:text-primary rounded-md">ข้อมูลรายวิชา</a>
+                <a href="#timeline" class="block px-3 py-2 text-base font-medium hover:bg-blue-50 hover:text-primary rounded-md">แผนการสอน</a>
+                <a href="#materials" class="block px-3 py-2 text-base font-medium hover:bg-blue-50 hover:text-primary rounded-md">สื่อการเรียนรู้</a>
+                <a href="#evaluation" class="block px-3 py-2 text-base font-medium hover:bg-blue-50 hover:text-primary rounded-md">การวัดผล</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="pt-24 pb-12 lg:pt-32 lg:pb-20 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-12">
+            <div class="w-full lg:w-1/2 space-y-6 text-center lg:text-left">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-blue-100 text-primary font-semibold text-sm mb-2 border border-blue-200 shadow-sm">
+                    วิทยาลัยเทคโนโลยีวีรพัฒน์ | ปวส. 1
+                </div>
+                <h1 class="font-kanit text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-gray-900">
+                    ธุรกิจดิจิทัลผ่าน <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">สื่อสังคมออนไลน์</span>
+                </h1>
+                <p class="font-sarabun text-gray-600 text-lg lg:text-xl">
+                    รหัสวิชา: 31910-2009 | 3 หน่วยกิต (ท.2 ป.2)<br>
+                    ภาคเรียนที่ 1 ปีการศึกษา 2569
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center lg:justify-start pt-4">
+                    <a href="#timeline" class="px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-500/30 flex items-center gap-2">
+                        <i class="fa-regular fa-calendar-days"></i> ดูแผนการสอน
+                    </a>
+                    <a href="https://classroom.google.com" target="_blank" class="px-6 py-3 rounded-xl bg-white border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 transition shadow-sm flex items-center gap-2">
+                        <i class="fa-solid fa-chalkboard-user text-green-600"></i> Google Classroom
+                    </a>
+                </div>
+                <div class="pt-6 flex items-center justify-center lg:justify-start gap-4 text-sm text-gray-500">
+                    <img src="https://placehold.co/100x100/2563EB/ffffff?text=Teacher" alt="ครูผู้สอน" class="w-12 h-12 rounded-full border-2 border-white shadow-md">
+                    <div>
+                        <p class="font-bold text-gray-800">ครูปริญพัชญ์ เมธาอริยะรุจน์</p>
+                        <p>ผู้สอนประจำรายวิชา</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full lg:w-1/2">
+                <!-- Abstract Hero Graphic using pure HTML/CSS relative positioning -->
+                <div class="relative w-full max-w-lg mx-auto aspect-square">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-full blur-3xl"></div>
+                    <div class="glass-card absolute top-10 left-0 p-4 rounded-2xl animate-[bounce_5s_infinite]">
+                        <i class="fa-brands fa-facebook text-4xl text-blue-600"></i>
+                    </div>
+                    <div class="glass-card absolute top-1/4 right-0 p-4 rounded-2xl animate-[bounce_6s_infinite_0.5s]">
+                        <i class="fa-brands fa-tiktok text-4xl text-black"></i>
+                    </div>
+                    <div class="glass-card absolute bottom-1/4 left-10 p-4 rounded-2xl animate-[bounce_4s_infinite_1s]">
+                        <i class="fa-brands fa-instagram text-4xl text-pink-600"></i>
+                    </div>
+                    <div class="absolute inset-4 rounded-full border-2 border-dashed border-primary/30 animate-[spin_60s_linear_infinite]"></div>
+                    <img src="https://placehold.co/600x600/f8fafc/2563EB?text=Social+Media+Marketing" alt="Social Media Marketing" class="w-full h-full object-cover rounded-[3rem] shadow-2xl relative z-10 p-2 bg-white">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="course-info" class="py-16 bg-white/50 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="font-kanit text-3xl font-bold text-gray-900 mb-2">ข้อมูลรายวิชา</h2>
+                <div class="w-16 h-1 bg-secondary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- คำอธิบายรายวิชา -->
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-primary">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <h3 class="font-kanit text-xl font-semibold">จุดประสงค์รายวิชา</h3>
+                    </div>
+                    <ul class="font-sarabun space-y-2 text-gray-700 list-disc list-inside marker:text-secondary pl-2">
+                        <li>เข้าใจเกี่ยวกับหลักการธุรกิจสื่อสังคมออนไลน์</li>
+                        <li>มีทักษะในการใช้เครื่องมือบนสื่อสังคมออนไลน์สำหรับธุรกิจดิจิทัล</li>
+                        <li>ประยุกต์ใช้สื่อสังคมออนไลน์กับธุรกิจดิจิทัล</li>
+                        <li>มีเจตคติและกิจนิสัยที่ดีในการปฏิบัติงาน</li>
+                    </ul>
+                </div>
+
+                <!-- สมรรถนะรายวิชา -->
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center text-secondary">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h3 class="font-kanit text-xl font-semibold">ตารางเรียน (อ้างอิง)</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <span class="font-medium flex items-center gap-2"><i class="fa-regular fa-calendar text-primary"></i> วันจันทร์</span>
+                            <span class="text-gray-600 bg-gray-100 px-3 py-1 rounded-md text-sm">08.30 – 09.30 น. (คาบ 1)</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                            <span class="font-medium flex items-center gap-2"><i class="fa-regular fa-calendar text-primary"></i> วันพฤหัสบดี</span>
+                            <span class="text-gray-600 bg-gray-100 px-3 py-1 rounded-md text-sm">09.30 – 11.30 น. (คาบ 2-3)</span>
+                        </div>
+                        <div class="bg-blue-50 text-blue-800 text-sm p-3 rounded-lg flex items-start gap-2 mt-2 border border-blue-100">
+                            <i class="fa-solid fa-circle-info mt-0.5"></i>
+                            <p>เปิดภาคเรียน 8 มิ.ย. 69 <br> งดการเรียนการสอน (สอบกลางภาค) 27-31 ก.ค. 69</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Helper function to generate weeks logically -->
+    <section id="timeline" class="py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="font-kanit text-3xl font-bold text-gray-900 mb-2">แผนการสอนรายสัปดาห์ (18 สัปดาห์)</h2>
+                <p class="text-gray-600">กระบวนการเรียนรู้แบบ Active Learning + GPAS 5 Steps</p>
+                <div class="w-16 h-1 bg-primary mx-auto rounded-full mt-4"></div>
+            </div>
+
+            <div class="space-y-4" id="accordion-container">
+                <!-- HTML will be injected here via JS to keep the file clean and ensure accurate dates -->
+            </div>
+        </div>
+    </section>
+
+    <section id="materials" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="font-kanit text-3xl font-bold text-gray-900 mb-2">สื่อการเรียนรู้</h2>
+                <div class="w-16 h-1 bg-secondary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                <!-- Card 1 -->
+                <a href="#" class="glass-card p-6 rounded-2xl text-center group block">
+                    <div class="w-16 h-16 mx-auto bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-regular fa-file-pdf"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800">เอกสารประกอบ<br>การเรียน</h3>
+                </a>
+                
+                <!-- Card 2 -->
+                <a href="#" class="glass-card p-6 rounded-2xl text-center group block">
+                    <div class="w-16 h-16 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-file-signature"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800">ใบงาน<br>(Worksheets)</h3>
+                </a>
+
+                <!-- Card 3 -->
+                <a href="#" class="glass-card p-6 rounded-2xl text-center group block">
+                    <div class="w-16 h-16 mx-auto bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-desktop"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800">PowerPoint<br>สไลด์บรรยาย</h3>
+                </a>
+
+                <!-- Card 4 -->
+                <a href="#" class="glass-card p-6 rounded-2xl text-center group block">
+                    <div class="w-16 h-16 mx-auto bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800">วิดีโอ<br>การสอน</h3>
+                </a>
+
+                <!-- Card 5 -->
+                <a href="#" class="glass-card p-6 rounded-2xl text-center group block">
+                    <div class="w-16 h-16 mx-auto bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-800">แบบทดสอบ<br>ออนไลน์</h3>
+                </a>
+            </div>
+            
+            <!-- Tools List -->
+            <div class="mt-12 p-6 bg-gray-50 rounded-2xl border border-gray-100 text-center">
+                <h4 class="font-kanit font-medium text-gray-700 mb-4">แพลตฟอร์มและเครื่องมือที่ใช้ในรายวิชา</h4>
+                <div class="flex flex-wrap justify-center gap-4 text-2xl text-gray-400">
+                    <i class="fa-brands fa-facebook hover:text-blue-600 transition" title="Facebook"></i>
+                    <i class="fa-brands fa-tiktok hover:text-black transition" title="TikTok"></i>
+                    <i class="fa-brands fa-instagram hover:text-pink-600 transition" title="Instagram"></i>
+                    <i class="fa-brands fa-google hover:text-green-500 transition" title="Google Classroom/Forms/Drive"></i>
+                    <div class="text-sm font-bold border-2 border-gray-400 rounded-md px-1 hover:border-blue-500 hover:text-blue-500 transition flex items-center cursor-help" title="Canva">Canva</div>
+                    <i class="fa-solid fa-robot hover:text-green-600 transition" title="ChatGPT"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="font-kanit text-3xl font-bold text-gray-900 mb-2">ผลงานนักศึกษา</h2>
+                <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="group relative overflow-hidden rounded-xl bg-gray-200 aspect-[4/3]">
+                    <img src="https://placehold.co/600x450/e2e8f0/64748b?text=Class+Activity" alt="กิจกรรมห้องเรียน" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 opacity-0 group-hover:opacity-100 transition">
+                        <span class="text-white font-medium">ภาพกิจกรรมการเรียน</span>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-xl bg-gray-200 aspect-[4/3]">
+                    <img src="https://placehold.co/600x450/e2e8f0/64748b?text=Canva+Design" alt="ผลงาน Canva" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 opacity-0 group-hover:opacity-100 transition">
+                        <span class="text-white font-medium">ผลงานออกแบบ Canva</span>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-xl bg-gray-200 aspect-[4/3]">
+                    <img src="https://placehold.co/600x450/e2e8f0/64748b?text=Social+Campaign" alt="แคมเปญ" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 opacity-0 group-hover:opacity-100 transition">
+                        <span class="text-white font-medium">Social Media Campaign</span>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-xl bg-gray-200 aspect-[4/3]">
+                    <img src="https://placehold.co/600x450/e2e8f0/64748b?text=Project+Presentation" alt="โปรเจกต์" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4 opacity-0 group-hover:opacity-100 transition">
+                        <span class="text-white font-medium">Digital Business Project</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="evaluation" class="py-16 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="font-kanit text-3xl font-bold text-gray-900 mb-2">การวัดและประเมินผล</h2>
+                <div class="w-16 h-1 bg-secondary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- สัดส่วนคะแนน -->
+                <div class="glass-card p-8 rounded-2xl">
+                    <h3 class="font-kanit text-xl font-semibold mb-6 flex items-center gap-2 text-primary">
+                        <i class="fa-solid fa-chart-pie"></i> สัดส่วนคะแนน (100%)
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm font-medium mb-1">
+                                <span>คะแนนเก็บระหว่างภาค (ใบงาน/ปฏิบัติ/จิตพิสัย)</span>
+                                <span>60%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm font-medium mb-1">
+                                <span>สอบกลางภาค</span>
+                                <span>20%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-red-500 h-2.5 rounded-full" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm font-medium mb-1">
+                                <span>สอบปลายภาค / โครงงาน</span>
+                                <span>20%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-green-500 h-2.5 rounded-full" style="width: 20%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="font-kanit text-lg font-semibold mt-8 mb-4 border-b pb-2">เกณฑ์การตัดเกรด</h3>
+                    <div class="grid grid-cols-4 gap-2 text-center text-sm font-bold">
+                        <div class="bg-gray-50 p-2 rounded border border-gray-100">80-100<br><span class="text-lg text-primary">4.0</span></div>
+                        <div class="bg-gray-50 p-2 rounded border border-gray-100">75-79<br><span class="text-lg text-primary">3.5</span></div>
+                        <div class="bg-gray-50 p-2 rounded border border-gray-100">70-74<br><span class="text-lg text-primary">3.0</span></div>
+                        <div class="bg-gray-50 p-2 rounded border border-gray-100">65-69<br><span class="text-lg text-primary">2.5</span></div>
+                        <div class="bg-gray-50 p-2 rounded border border-gray-100">60-64<br><span class="text-lg text-primary">2.0</span></div>
+                        <div class="bg-gray-50 p-2 rounded border border-gray-100">55-59<br><span class="text-lg text-primary">1.5</span></div>
+                        <div class="bg-gray-50 p-2 rounded border border-gray-100">50-54<br><span class="text-lg text-primary">1.0</span></div>
+                        <div class="bg-red-50 p-2 rounded border border-red-100 text-red-600">0-49<br><span class="text-lg">0</span></div>
+                    </div>
+                </div>
+
+                <!-- เครื่องมือประเมิน -->
+                <div class="glass-card overflow-hidden rounded-2xl flex flex-col">
+                    <div class="p-6 bg-gray-50 border-b border-gray-200">
+                        <h3 class="font-kanit text-xl font-semibold flex items-center gap-2 text-gray-800">
+                            <i class="fa-solid fa-list-check text-secondary"></i> วิธีและเครื่องมือการประเมิน
+                        </h3>
+                    </div>
+                    <div class="overflow-x-auto p-0 flex-grow">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-700 text-sm uppercase">
+                                    <th class="px-6 py-4 font-medium border-b">วิธีประเมิน</th>
+                                    <th class="px-6 py-4 font-medium border-b">เครื่องมือ</th>
+                                    <th class="px-6 py-4 font-medium border-b text-center">เกณฑ์</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 text-sm">
+                                <tr class="hover:bg-gray-50 border-b">
+                                    <td class="px-6 py-4 flex items-center gap-2"><i class="fa-solid fa-laptop-code text-gray-400"></i> แบบทดสอบ</td>
+                                    <td class="px-6 py-4">Google Form</td>
+                                    <td class="px-6 py-4 text-center"><span class="bg-blue-100 text-blue-800 py-1 px-3 rounded-full text-xs">60%</span></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 border-b">
+                                    <td class="px-6 py-4 flex items-center gap-2"><i class="fa-regular fa-file-lines text-gray-400"></i> ใบงาน</td>
+                                    <td class="px-6 py-4">Worksheet</td>
+                                    <td class="px-6 py-4 text-center"><span class="bg-green-100 text-green-800 py-1 px-3 rounded-full text-xs">ผ่าน</span></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 border-b">
+                                    <td class="px-6 py-4 flex items-center gap-2"><i class="fa-solid fa-users-gear text-gray-400"></i> งานปฏิบัติ</td>
+                                    <td class="px-6 py-4">Rubric (เกณฑ์ให้คะแนน)</td>
+                                    <td class="px-6 py-4 text-center"><span class="bg-green-100 text-green-800 py-1 px-3 rounded-full text-xs">ผ่าน</span></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 flex items-center gap-2"><i class="fa-solid fa-person-chalkboard text-gray-400"></i> การนำเสนอ</td>
+                                    <td class="px-6 py-4">Rubric (เกณฑ์ให้คะแนน)</td>
+                                    <td class="px-6 py-4 text-center"><span class="bg-green-100 text-green-800 py-1 px-3 rounded-full text-xs">ผ่าน</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 border-t-4 border-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div>
+                    <h3 class="text-white font-kanit font-bold text-xl mb-4 border-b border-slate-700 pb-2">วิทยาลัยเทคโนโลยีวีรพัฒน์</h3>
+                    <p class="font-sarabun text-lg">
+                        รายวิชา 31910-2009 <br>
+                        ธุรกิจดิจิทัลผ่านสื่อสังคมออนไลน์
+                    </p>
+                    <div class="mt-4 flex gap-3">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition text-white"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition text-white"><i class="fa-solid fa-globe"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-kanit font-bold text-xl mb-4 border-b border-slate-700 pb-2">ผู้สอน</h3>
+                    <p class="font-medium text-white mb-2"><i class="fa-solid fa-chalkboard-user mr-2 text-primary"></i> ครูปริญพัชญ์ เมธาอริยะรุจน์</p>
+                    <p class="mb-2"><i class="fa-solid fa-phone mr-2 text-primary"></i> โทรศัพท์ : 063-1455999</p>
+                    <p><i class="fa-solid fa-envelope mr-2 text-primary"></i> อีเมล : admin@school.ac.th</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-kanit font-bold text-xl mb-4 border-b border-slate-700 pb-2">เมนูด่วน</h3>
+                    <div class="flex flex-col space-y-3">
+                        <a href="https://classroom.google.com" target="_blank" class="hover:text-white transition flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-right text-xs text-primary"></i> Google Classroom
+                        </a>
+                        <a href="#" class="hover:text-white transition flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-right text-xs text-primary"></i> ดาวน์โหลดเอกสาร
+                        </a>
+                        <a href="tel:0631455999" class="hover:text-white transition flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-right text-xs text-primary"></i> ติดต่อผู้สอน
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm font-sarabun">
+                <p>&copy; 2026 วิทยาลัยเทคโนโลยีวีรพัฒน์. All rights reserved.</p>
+                <a href="#home" class="mt-4 md:mt-0 text-slate-400 hover:text-white transition flex items-center gap-2">
+                    กลับสู่ด้านบน <i class="fa-solid fa-circle-up text-xl text-primary"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data for the 18 weeks teaching plan
+        const scheduleData = [
+            { week: 1, date1: '8 มิถุนายน 2569 (จันทร์)', date2: '11 มิถุนายน 2569 (พฤหัสบดี)', unit: 'ปฐมนิเทศ / หน่วยที่ 1 ความรู้เบื้องต้นฯ', topics: ['ปฐมนิเทศรายวิชา, แนะนำเกณฑ์การวัดผล', 'แนะนำ Google Classroom', 'ความรู้เบื้องต้นเกี่ยวกับธุรกิจสื่อสังคมออนไลน์', 'กิจกรรมวิเคราะห์ธุรกิจบน Social Media'], tools: ['Google Classroom', 'Facebook Page'] },
+            { week: 2, date1: '15 มิถุนายน 2569 (จันทร์)', date2: '18 มิถุนายน 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 1 ความรู้เบื้องต้นฯ (ต่อ)', topics: ['ประเภทของ Social Media', 'แนวโน้มธุรกิจดิจิทัล', 'การเลือกใช้ Social Media ให้เหมาะกับธุรกิจ', 'Workshop วิเคราะห์แพลตฟอร์ม FB, TikTok, IG'], tools: ['Facebook', 'TikTok', 'Instagram'] },
+            { week: 3, date1: '22 มิถุนายน 2569 (จันทร์)', date2: '25 มิถุนายน 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 2 ระบบการชำระเงิน', topics: ['ความสำคัญและรูปแบบการชำระเงินออนไลน์', 'ระบบ Payment Gateway', 'E-Wallet และ Mobile Banking', 'กรณีศึกษาความปลอดภัยทางการเงิน'], tools: ['Canva', 'YouTube'] },
+            { week: 4, date1: '29 มิถุนายน 2569 (จันทร์)', date2: '2 กรกฎาคม 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 2 (ต่อ) / หน่วยที่ 3', topics: ['Workshop การตั้งค่าระบบรับชำระเงินจำลอง', 'หน่วยที่ 3 ระบบการขนส่งสินค้าเบื้องต้น', 'เปรียบเทียบผู้ให้บริการขนส่ง (Logistics)', 'การบริหารจัดการสต็อกสินค้าเบื้องต้น'], tools: ['Google Forms', 'Canva'] },
+            { week: 5, date1: '6 กรกฎาคม 2569 (จันทร์)', date2: '9 กรกฎาคม 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 3 ระบบการขนส่งสินค้า (ต่อ)', topics: ['การคำนวณต้นทุนการขนส่ง', 'ระบบ Tracking และการบริการลูกค้า', 'Workshop: วางแผนการขนส่งสำหรับธุรกิจ', 'นำเสนอแผนงานขนส่งสินค้า'], tools: ['Google Drive', 'Canva'] },
+            { week: 6, date1: '13 กรกฎาคม 2569 (จันทร์)', date2: '16 กรกฎาคม 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 4 ความรู้เบื้องต้นเกี่ยวกับระบบการตลาด', topics: ['หลักการตลาดออนไลน์ (Digital Marketing)', 'การวิเคราะห์พฤติกรรมผู้บริโภค', 'การสร้าง Content Marketing เบื้องต้น', 'Workshop: ร่างแผนการตลาดผ่านสื่อสังคม'], tools: ['ChatGPT', 'Facebook Page'] },
+            { week: 7, date1: '20 กรกฎาคม 2569 (จันทร์)', date2: '23 กรกฎาคม 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 4 (ต่อ) / ทบทวนก่อนสอบ', topics: ['การวัดผลแคมเปญการตลาด (KPIs)', 'ทบทวนเนื้อหาหน่วยที่ 1-4', 'ถาม-ตอบ ปัญหาและข้อสงสัย', 'ทำแบบทดสอบก่อนสอบกลางภาค (Pre-test)'], tools: ['Google Forms', 'Google Classroom'] },
+            { week: 8, date1: '27 กรกฎาคม 2569 (จันทร์)', date2: '30 กรกฎาคม 2569 (พฤหัสบดี)', unit: 'สอบกลางภาคเรียน', topics: ['งดการเรียนการสอน (สัปดาห์สอบกลางภาค)', 'วัดผลความรู้หน่วยที่ 1-4', '-', '-'], isExam: true },
+            { week: 9, date1: '3 สิงหาคม 2569 (จันทร์)', date2: '6 สิงหาคม 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 5 การจัดอันดับเว็บไซต์ (SEO)', topics: ['ความหมายและความสำคัญของ SEO', 'Keyword Research เบื้องต้น', 'On-page และ Off-page SEO', 'Workshop: การหา Keyword ด้วยเครื่องมือฟรี'], tools: ['Google', 'ChatGPT'] },
+            { week: 10, date1: '10 สิงหาคม 2569 (จันทร์)', date2: '13 สิงหาคม 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 5 (ต่อ)', topics: ['การเขียน Content ให้สอดคล้องกับ SEO', 'SEO สำหรับ Social Media', 'ฝึกปฏิบัติปรับแต่งโครงสร้างโพสต์', 'นำเสนอ SEO Project แบบย่อย'], tools: ['Canva', 'Facebook Page'] },
+            { week: 11, date1: '17 สิงหาคม 2569 (จันทร์)', date2: '20 สิงหาคม 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 6 การจัดการฐานข้อมูลลูกค้า', topics: ['ความสำคัญของฐานข้อมูลลูกค้า (CRM)', 'เครื่องมือเก็บข้อมูลเบื้องต้น', 'PDPA กับการจัดการข้อมูลลูกค้า', 'สร้างฟอร์มเก็บข้อมูลด้วย Google Forms'], tools: ['Google Forms', 'Google Spreadsheets'] },
+            { week: 12, date1: '24 สิงหาคม 2569 (จันทร์)', date2: '27 สิงหาคม 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 6 (ต่อ)', topics: ['การจัดกลุ่มเป้าหมาย (Segmentation)', 'การนำข้อมูลมาใช้สร้าง Promotion', 'Workshop: วิเคราะห์ข้อมูลจำลอง', 'สรุปแนวทาง CRM สำหรับธุรกิจขนาดเล็ก'], tools: ['Google Spreadsheets', 'Canva'] },
+            { week: 13, date1: '31 สิงหาคม 2569 (จันทร์)', date2: '3 กันยายน 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 7 ธุรกิจดิจิทัล', topics: ['รูปแบบและโมเดลธุรกิจดิจิทัล (Business Model)', 'กรณีศึกษาธุรกิจดิจิทัลที่ประสบความสำเร็จ', 'การสร้าง Business Model Canvas', 'Workshop: เขียน Canvas ธุรกิจของตนเอง'], tools: ['Canva', 'ChatGPT'] },
+            { week: 14, date1: '7 กันยายน 2569 (จันทร์)', date2: '10 กันยายน 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 7 (ต่อ)', topics: ['การบูรณาการเครื่องมือดิจิทัลเข้ากับธุรกิจ', 'ข้อควรระวังและจริยธรรมในธุรกิจดิจิทัล', 'วิพากษ์และปรับปรุง Business Model', 'เตรียมพร้อมสำหรับโปรเจกต์ปลายภาค'], tools: ['Google Classroom', 'Canva'] },
+            { week: 15, date1: '14 กันยายน 2569 (จันทร์)', date2: '17 กันยายน 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 8 การวางแผนสำหรับกิจกรรมธุรกิจดิจิทัลในอนาคต', topics: ['เทรนด์เทคโนโลยีในอนาคต (AI, AR/VR)', 'การปรับตัวของธุรกิจในยุค Disruption', 'วางแผนกิจกรรมส่งเสริมการขายระยะยาว', 'Workshop: ร่างแผนธุรกิจดิจิทัลฉบับสมบูรณ์'], tools: ['ChatGPT', 'YouTube'] },
+            { week: 16, date1: '21 กันยายน 2569 (จันทร์)', date2: '24 กันยายน 2569 (พฤหัสบดี)', unit: 'หน่วยที่ 8 (ต่อ)', topics: ['การทำงบประมาณเบื้องต้น', 'ติดตามผลและประเมินความเสี่ยง', 'ให้คำปรึกษา Digital Business Project', 'ซักซ้อมการนำเสนอ (Pitching)'], tools: ['Google Classroom'] },
+            { week: 17, date1: '28 กันยายน 2569 (จันทร์)', date2: '1 ตุลาคม 2569 (พฤหัสบดี)', unit: 'การนำเสนอโครงงาน', topics: ['นำเสนอ Digital Business Project (กลุ่มที่ 1)', 'นำเสนอ Digital Business Project (กลุ่มที่ 2)', 'สรุปผลและข้อเสนอแนะจากผู้สอน', 'ประเมินผลสัมฤทธิ์รายวิชา'], tools: ['Canva', 'Rubric'] },
+            { week: 18, date1: '5 ตุลาคม 2569 (จันทร์)', date2: '8 ตุลาคม 2569 (พฤหัสบดี)', unit: 'สอบปลายภาคเรียน', topics: ['วัดและประเมินผลปลายภาค', '-', '-', '-'], isExam: true },
+        ];
+
+        const container = document.getElementById('accordion-container');
+
+        scheduleData.forEach((data, index) => {
+            const isExam = data.isExam;
+            
+            // Components inside the accordion
+            const objectivesHTML = !isExam ? `
+                <div class="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                    <h5 class="font-bold text-gray-800 mb-2 text-sm"><i class="fa-solid fa-bullseye text-primary"></i> จุดประสงค์การเรียนรู้ (KPA)</h5>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                        <div class="bg-white p-2 rounded shadow-sm border-l-2 border-blue-500">
+                            <span class="font-bold text-blue-600">🧠 K (Knowledge)</span><br>
+                            มีความรู้ความเข้าใจในหัวข้อ ${data.unit}
+                        </div>
+                        <div class="bg-white p-2 rounded shadow-sm border-l-2 border-orange-500">
+                            <span class="font-bold text-orange-500">🛠 P (Process)</span><br>
+                            สามารถปฏิบัติและประยุกต์ใช้เครื่องมือได้อย่างถูกต้อง
+                        </div>
+                        <div class="bg-white p-2 rounded shadow-sm border-l-2 border-red-500">
+                            <span class="font-bold text-red-500">❤️ A (Attitude)</span><br>
+                            มีกิจนิสัยที่ดี มีความรับผิดชอบในการทำงาน
+                        </div>
+                    </div>
+                </div>
+            ` : '';
+
+            const gpasHTML = !isExam ? `
+                <div class="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                    <h5 class="font-bold text-gray-800 mb-2 text-sm"><i class="fa-solid fa-person-running text-primary"></i> กิจกรรมการเรียนรู้ (GPAS 5 Steps)</h5>
+                    <div class="flex flex-wrap gap-2 text-xs font-medium">
+                        <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded">1. Gathering</span>
+                        <span class="bg-cyan-100 text-cyan-800 px-2 py-1 rounded">2. Processing</span>
+                        <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded">3. Applying</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-1 rounded">4. Presenting</span>
+                        <span class="bg-rose-100 text-rose-800 px-2 py-1 rounded">5. Self-Regulating</span>
+                    </div>
+                </div>
+            ` : '';
+
+            const toolsHTML = !isExam && data.tools ? `
+                <div class="mt-4 pt-3 border-t border-gray-100 text-sm text-gray-600 flex items-center gap-2">
+                    <i class="fa-solid fa-toolbox text-gray-400"></i> <b>สื่อ/เครื่องมือ:</b> ${data.tools.join(', ')}
+                </div>
+            ` : '';
+
+            const examBadge = isExam ? `<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold border border-red-200 ml-2 animate-pulse">สอบวัดผล</span>` : '';
+
+            const html = `
+            <div class="glass-card rounded-xl border border-gray-200 overflow-hidden accordion-item mb-4 shadow-sm">
+                <button class="w-full px-6 py-4 flex justify-between items-center bg-white hover:bg-gray-50 focus:outline-none transition accordion-btn" onclick="toggleAccordion(this)">
+                    <div class="flex items-center gap-4 text-left">
+                        <div class="w-12 h-12 rounded-lg ${isExam ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'} flex flex-col items-center justify-center font-bold">
+                            <span class="text-xs uppercase">Week</span>
+                            <span class="text-lg leading-none">${data.week}</span>
+                        </div>
+                        <div>
+                            <h3 class="font-kanit font-semibold text-lg text-gray-800 flex items-center">
+                                ${data.unit} ${examBadge}
+                            </h3>
+                            <p class="text-sm text-gray-500 font-sarabun mt-1">
+                                <i class="fa-regular fa-clock"></i> เริ่ม ${data.date1}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-gray-400 icon-rotate">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </button>
+                
+                <div class="accordion-content bg-white border-t border-gray-100">
+                    <div class="accordion-inner px-6 py-5">
+                        
+                        ${objectivesHTML}
+                        ${gpasHTML}
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- วันจันทร์ -->
+                            <div class="border rounded-lg p-4 relative ${isExam ? 'border-red-200 bg-red-50' : 'border-gray-200'}">
+                                <div class="absolute -top-3 left-4 bg-white px-2 text-xs font-bold ${isExam ? 'text-red-500' : 'text-primary'} border ${isExam ? 'border-red-200' : 'border-gray-200'} rounded">วันจันทร์ (คาบ 1)</div>
+                                <div class="text-sm text-gray-500 mb-2 mt-1"><i class="fa-regular fa-calendar-days"></i> ${data.date1} (08.30 - 09.30)</div>
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    <li>${data.topics[0]}</li>
+                                    ${data.topics[1] !== '-' ? `<li>${data.topics[1]}</li>` : ''}
+                                </ul>
+                            </div>
+
+                            <!-- วันพฤหัสบดี -->
+                            <div class="border rounded-lg p-4 relative ${isExam ? 'border-red-200 bg-red-50' : 'border-gray-200'}">
+                                <div class="absolute -top-3 left-4 bg-white px-2 text-xs font-bold ${isExam ? 'text-red-500' : 'text-primary'} border ${isExam ? 'border-red-200' : 'border-gray-200'} rounded">วันพฤหัสบดี (คาบ 2-3)</div>
+                                <div class="text-sm text-gray-500 mb-2 mt-1"><i class="fa-regular fa-calendar-days"></i> ${data.date2} (09.30 - 11.30)</div>
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    <li>${data.topics[2]}</li>
+                                    ${data.topics[3] !== '-' ? `<li>${data.topics[3]}</li>` : ''}
+                                </ul>
+                            </div>
+                        </div>
+
+                        ${toolsHTML}
+
+                    </div>
+                </div>
+            </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        function toggleAccordion(btn) {
+            const item = btn.parentElement;
+            const content = item.querySelector('.accordion-content');
+            
+            // Toggle current
+            item.classList.toggle('open');
+            content.classList.toggle('open');
+            
+            // Optional: Close others (Uncomment if you want accordion to behave like a strict collapse)
+            /*
+            document.querySelectorAll('.accordion-item').forEach(otherItem => {
+                if(otherItem !== item) {
+                    otherItem.classList.remove('open');
+                    otherItem.querySelector('.accordion-content').classList.remove('open');
+                }
+            });
+            */
+        }
+
+        // Open first week by default
+        setTimeout(() => {
+            const firstBtn = document.querySelector('.accordion-btn');
+            if(firstBtn) toggleAccordion(firstBtn);
+        }, 100);
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 10) {
+                nav.classList.add('shadow-md');
+                nav.classList.replace('bg-white/70', 'bg-white/90');
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.classList.replace('bg-white/90', 'bg-white/70');
+            }
+        });
+    </script>
+</body>
+</html>
